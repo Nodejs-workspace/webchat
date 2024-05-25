@@ -53,7 +53,7 @@ export default class MessageController {
         try {
             const groupId = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!groupId || !Types.ObjectId.isValid(groupId))
-                throw new ExpressError(errorConstants.GROUP.VALID_GROUP_ID_REQUIRED, HttpStatus.BAD_REQUEST);
+                throw new ExpressError(errorConstants.GROUP.VALID_ID_REQUIRED, HttpStatus.BAD_REQUEST);
             const dbMessages = await this._messageService.getMessageByGroupId(groupId);
             const response: ApiResponse<Array<IMessageDocument>> = {
                 status: RESPONSE_STATUS.SUCCESS,
@@ -80,7 +80,7 @@ export default class MessageController {
         try {
             const userId = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!userId || !Types.ObjectId.isValid(userId))
-                throw new ExpressError(errorConstants.USER.VALID_USER_ID_REQUIRED, HttpStatus.BAD_REQUEST);
+                throw new ExpressError(errorConstants.USER.VALID_ID_REQUIRED, HttpStatus.BAD_REQUEST);
             const dbMessages = await this._messageService.getMessageByGroupId(userId);
             const response: ApiResponse<Array<IMessageDocument>> = {
                 status: RESPONSE_STATUS.SUCCESS,

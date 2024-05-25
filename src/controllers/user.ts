@@ -159,7 +159,7 @@ export default class UserController {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
-                throw new ExpressError(errorConstants.USER.VALID_USER_ID_REQUIRED, HttpStatus.BAD_REQUEST);
+                throw new ExpressError(errorConstants.USER.VALID_ID_REQUIRED, HttpStatus.BAD_REQUEST);
             const profilePicture = await this._userService.getUserProfilePicById(id);
             const response: ApiResponse<string> = {
                 status: RESPONSE_STATUS.SUCCESS,
@@ -187,7 +187,7 @@ export default class UserController {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
 
             if (!id || !Types.ObjectId.isValid(id))
-                throw new ExpressError(errorConstants.USER.VALID_USER_ID_REQUIRED, HttpStatus.BAD_REQUEST);
+                throw new ExpressError(errorConstants.USER.VALID_ID_REQUIRED, HttpStatus.BAD_REQUEST);
             if (!req.file)
                 throw new ExpressError(errorConstants.USER.IMAGE_NOT_FOUND_FOR_PROFILE_PICTURE, HttpStatus.NOT_FOUND);
 
