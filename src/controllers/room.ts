@@ -133,22 +133,27 @@ export default class RoomController {
     async getUsersRoomsView(req: CustomRequest, res: Response, _next: NextFunction) {
         const siteUrl = `${req.protocol}://${req.get("host")}`;
         const { dbUser } = <CustomSessionWithSessionData>req.session;
+        const layout = "./layouts/rooms/index.layout.ejs";
         try {
             const rooms = await this._roomService.getRooms();
-
-            return res.render("rooms", {
-                title: constants.DEFAULTS.EMPTY.STRING(),
+            const options = {
+                layout,
+                siteUrl,
+                title: "Web Chat 2",
                 rooms,
-                origin: siteUrl,
                 user: dbUser,
-            });
+            };
+
+            return res.render("rooms/index", options);
         } catch (error) {
-            return res.render("rooms", {
-                title: constants.DEFAULTS.EMPTY.STRING(),
-                rooms: constants.DEFAULTS.EMPTY.ARRAY(),
-                origin: siteUrl,
+            const options = {
+                layout,
+                siteUrl,
+                title: "Web Chat 2",
+                rooms: constants.DEFAULTS.EMPTY.ARRAY<IRoomDocument>(),
                 user: dbUser,
-            });
+            };
+            return res.render("rooms/index", options);
         }
     }
 

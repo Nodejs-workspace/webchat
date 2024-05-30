@@ -1,11 +1,12 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: join(__dirname, "../..", ".env") });
 
 import express from "express";
 import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 
 import helmet from "helmet";
-import path from "path";
+import path, { join } from "path";
 import morgan from "morgan";
 
 import constants from "./constants";
@@ -38,8 +39,6 @@ app.set("view engine", "ejs");
 
 // set up public, api, and view routes
 app.use(constants.ROUTER_PATH.PUBLIC, express.static("public"));
-app.use(constants.ROUTER_PATH.PUBLIC, ErrorMiddleware.notFoundHandle);
-app.use(constants.ROUTER_PATH.PUBLIC, ErrorMiddleware.apiErrorHandle);
 
 // API Routes
 app.use(constants.ROUTER_PATH.APIS.BASE_PATH, apiRoute);

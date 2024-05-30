@@ -1,0 +1,25 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.navbar {
+    background-color: rgb(0, 100, 67);
+    justify-content: center;
+}
+
+#navbarNavAltMarkup {
+    justify-content: center;
+    align-items: center;
+}
+
+.join {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

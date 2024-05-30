@@ -1,0 +1,142 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    color: black;
+    overflow-x: hidden;
+}
+
+#chat-history::-webkit-scrollbar {
+    width: 6px;
+    /* width of the entire scrollbar */
+}
+
+#chat-history::-webkit-scrollbar-track {
+    background: whitesmoke;
+    /* color of the tracking area */
+}
+
+#chat-history::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    /* creates padding around scroll thumb */
+}
+
+#groupBox::-webkit-scrollbar {
+    width: 3px;
+    /* width of the entire scrollbar */
+}
+
+#groupBox::-webkit-scrollbar-track {
+    background: whitesmoke;
+    /* color of the tracking area */
+}
+
+#groupBox::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    /* color of the scroll thumb */
+    border-radius: 10px;
+    /* roundness of the scroll thumb */
+    /* creates padding around scroll thumb */
+}
+
+*:focus {
+    outline: none;
+    border: 0;
+}
+
+#text-row {
+    user-select: none;
+    cursor: default;
+}
+
+.navbar {
+    background-color: rgb(0, 100, 67);
+    justify-content: center;
+}
+
+#navbarNavAltMarkup {
+    justify-content: center;
+    align-items: center;
+}
+
+.text-container {
+    justify-content: center;
+    align-items: end;
+}
+
+button {
+    border-radius: 10px;
+    padding-right: 0px;
+    background-color: rgb(0, 100, 67);
+    outline: none;
+    box-shadow: none;
+}
+
+#showPopUp,
+#delete {
+    width: 25px;
+    height: 15px;
+    border-radius: 0px;
+    background-color: rgb(0, 100, 67);
+    border-color: rgb(0, 100, 67);
+    padding: 10px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    font-size: 0px;
+    outline: none;
+    box-shadow: none;
+}
+
+input {
+    outline: none;
+    box-shadow: none;
+}
+
+#head {
+    padding-left: 20px;
+    margin: 5px;
+    background-color: rgb(0, 100, 67);
+    color: white;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#groupBox {
+    overflow: visible;
+    overflow-y: scroll;
+    height: calc(100vh - 75px);
+    padding: 0;
+    background-color: white;
+}
+
+#chat-div {
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    height: calc(100vh - 75px);
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#chat-history {
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
+    padding-left: 20px;
+    flex: 1;
+    overflow-y: scroll;
+}

@@ -1,0 +1,155 @@
+
+<div class="join">
+  <div class="row">
+    <div class="col-sm -4" id="profileData">
+      <div class="card">
+        <div
+          class="card-header"
+          style="display: flex; flex-direction: row; justify-content: space-between; align-items: center"
+        >
+          <div class="image" style="justify-self: end" id="show-image">
+            <img class="image" id="image" height="90" width="90" style="border-radius: 60px" onclick="showImagePreview()"/>
+          </div>
+          <div id="edit-image" style="display: none;">
+            <input type="file" id="upload" hidden />
+            <label for="upload" style="padding-left: 10px">
+              <?xml version="1.0" ?>
+              <svg
+                enable-background="new 0 0 32 32"
+                height="50"
+                id="svg2"
+                version="1.1"
+                viewBox="0 0 32 32"
+                width="50"
+                xml:space="preserve"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:cc="http://creativecommons.org/ns#"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+                xmlns:svg="http://www.w3.org/2000/svg"
+              >
+                <g id="background"><rect fill="none" height="32" width="32" /></g>
+                <g id="user_x5F_close_x5F_edit">
+                  <path
+                    d="M32,23c-0.002-4.973-4.029-9-9-9c-0.025,0-0.049,0.003-0.074,0.004C23.608,12.826,24,11.459,24,10c0-4.418-3.582-8-8-8   c-4.418,0-8,3.582-8,8c0,4.26,3.332,7.732,7.531,7.977c-0.419,0.622-0.753,1.304-1.008,2.023H4c-4,0-4,4-4,4v8h32v-8   C32,24,32,23.207,32,23z M29.883,23c-0.009,3.799-3.084,6.874-6.883,6.883c-3.801-0.009-6.876-3.084-6.885-6.883   c0.009-3.801,3.084-6.876,6.885-6.884C26.799,16.124,29.874,19.199,29.883,23z"
+                  />
+                  <polygon points="22,27 19,27 19,24  " />
+                  <rect
+                    height="4.243"
+                    transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 56.5269 20.5858)"
+                    width="7.071"
+                    x="20.464"
+                    y="19.879"
+                  />
+                </g>
+              </svg>
+            </label>
+          </div>
+          <div class="text">
+            <b><%= user.name%></b>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="image" id="image-preview-class" style="display: none;">
+            <div>
+              <img class="card-img-top" id="image-preview" />
+            </div>
+
+            <div class="d-grid gap-3" id="edit-image" style="padding-top: 10px;">
+              <button class="btn btn-sm btn-danger" type="button" onclick="cancel()">close</button>
+            </div>
+          </div>
+          <form class="row g-3" id="user-input-form">
+            <input
+              type="text"
+              class="form-control form-control-sm visually-hidden"
+              id="_id"
+              value="<%= user._id%>"
+            />
+            <div class="col-12" id="name-div" style="display: none;">
+              <label for="name" class="form-label">User Name</label>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                id="name"
+                autocomplete="off"
+                value="<%= user.name%>"
+                readonly="true"
+              />
+            </div>
+            <div class="col-12">
+              <label for="email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                class="form-control form-control-sm"
+                id="email"
+                autocomplete="off"
+                value="<%= user.email%>"
+                readonly="true"
+              />
+            </div>
+            <div class="col-12">
+              <label for="password="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="********"
+                autocomplete="off"
+                readonly="true"
+              />
+            </div>
+            <div class="col-12">
+              <label for="city" class="form-label">city</label>
+              <input type="text" class="form-control" id="city" autocomplete="off" value="<%= user.city%>"
+              readonly="true" ">
+            </div>
+
+            <div class="d-grid gap-3" id="edit">
+              <button class="btn btn-sm btn-success cls" type="button" onclick="edit(`<%= user._id%>`)">
+                edit
+              </button>
+              <button class="btn btn-sm btn-danger" type="button" onclick="closeImagePopUp()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-header"><%title %></div>
+        <div class="card-body">
+          <div class="user-table">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Rooms</th>
+                  <th scope="col">Description</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const room of rooms) { %>
+                <tr>
+                  <td><%= room.name %></td>
+                  <td><%= room.description %></td>
+                  <td>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-sm btn-success" type="button" onclick="join('<%= room._id%>')">
+                        join
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="<%=siteUrl%>/public/js/rooms.js"></script>

@@ -31,6 +31,7 @@ export default {
             MESSAGE: "/message",
             GROUPS: "/groups",
             PROFILE: "/profile",
+            ID_PARAM: "/:id",
             USER: "/user",
         },
         PUBLIC: "/public",
