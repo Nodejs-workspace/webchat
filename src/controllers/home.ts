@@ -10,6 +10,6 @@ export default class HomeController {
             siteUrl,
             title: "Web Chat 2",
         };
-        return res.render("index", options);
+        return res.render("index/index", options);
     }
 }

@@ -1,10 +1,14 @@
 {
-    "verbose": true,
-    "watch": ["src", ".env"],
-    "ext": "ts,ejs, .env",
-    "ignore": ["src/**/*.spec.ts"],
-    "exec": "npm run start",
+    "watch": [
+      "src",
+      ".env"
+    ],
+    "ext": "ts",
+    "ignore": [
+      "src/**/*.spec.ts"
+    ],
+    "exec": "npm run build && npm start",
     "env": {
-        "NODE_ENV": "development"
+      "NODE_ENV": "development"
     }
-}
+  }

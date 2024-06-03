@@ -10,10 +10,10 @@
     "prepare": "npx husky",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "tsc --build",
+    "build": "npx tsc --build",
     "start": "node dist/src/index.js",
     "watch": "nodemon --config nodemon.json",
-    "test": "npm run build&& jest",
+    "test": "npm run build && jest",
     "lint": "eslint ./src --ext .ts",
     "format": "eslint ./src --ext .ts --fix"
   },

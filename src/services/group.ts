@@ -21,11 +21,9 @@ export default class GroupService {
         return await this._groupRepository.getGroups();
     }
 
-    async getGroupsByRoomIdView(room: string): Promise<Array<IGroupDocument>> {
+    async getGroupsWithRoomData(room: string): Promise<Array<IGroupDocument>> {
         const groupData = await this._groupRepository.getGroupsByRoomId(room);
-        for (const group of groupData) {
-            await group.populate("room");
-        }
+        for (const group of groupData) await group.populate("room");
         return groupData;
     }
 

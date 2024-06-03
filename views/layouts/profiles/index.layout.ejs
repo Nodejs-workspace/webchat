@@ -12,20 +12,6 @@
             crossorigin="anonymous"
         />
         <title><%= title%></title>
-        <link rel="stylesheet" href="<%=siteUrl%>/public/css/index.css" />
+        <link rel="stylesheet" href="<%= siteUrl%>/css/profile.css" />
     </head>
-    <body>
-        <!-- HEADER -->
-        <%- include('../partials/headers/navebar')%>
-
-        <!-- BODY CONTENT -->
-        <%- body %>
-
-        <!-- FOOTER -->
-        <%- include('../partials/footers/footer')%>
-    </body>
 </html>
-
-<script>
-    getElementById("name").focus();
-</script>

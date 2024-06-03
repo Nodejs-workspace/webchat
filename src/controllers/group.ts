@@ -106,27 +106,26 @@ export default class GroupController {
         }
     }
 
-    async getUsersRoomsGroupsView(req: CustomRequest, res: Response, _next: NextFunction) {
+    async getUsersRoomsGroupsView(req: CustomRequest, res: Response, next: NextFunction) {
         const { dbUser } = <CustomSessionWithSessionData>req.session;
         const siteUrl = `${req.protocol}://${req.get("host")}`;
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
                 throw new ExpressError(errorConstants.ROOM.NOT_FOUND_BY_ID, HttpStatus.BAD_REQUEST);
-            const groups = await this._groupService.getGroupsByRoomIdView(id);
-            return res.render("groups", {
-                title: constants.DEFAULTS.EMPTY.STRING(),
+            const groups = await this._groupService.getGroupsWithRoomData(id);
+            const layout = "./layouts/groups/index.layout.ejs";
+            const options = {
+                layout,
+                siteUrl,
+                title: "Web Chat 2",
                 groups,
                 origin: siteUrl,
                 user: dbUser,
-            });
+            };
+            return res.render("groups/index", options);
         } catch (error) {
-            return res.render("groups", {
-                title: constants.DEFAULTS.EMPTY.STRING(),
-                groups: constants.DEFAULTS.EMPTY.OBJECT(),
-                origin: siteUrl,
-                user: dbUser,
-            });
+            return next(error);
         }
     }
 }

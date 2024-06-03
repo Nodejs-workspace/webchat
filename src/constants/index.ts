@@ -22,6 +22,7 @@ export default {
             PROFILE: "/profile",
             USER: "/user",
             DOCS: "/docs",
+            LOGIN: "/login",
         },
         VIEWS: {
             BASE_PATH: "/web-chat",
