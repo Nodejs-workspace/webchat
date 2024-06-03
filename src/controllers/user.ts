@@ -8,7 +8,6 @@ import errorConstants from "../constants/error";
 import { IUser, IUserDocument } from "../databases/models/user";
 import UserDTO from "../dtos/user";
 import { RESPONSE_STATUS } from "../enums/responseStatus";
-import logger from "../helpers/logger";
 import { ExpressError } from "../helpers/expressError";
 import UserService from "../services/user";
 import { ApiResponse, CustomAPIRequest } from "../types/customRequest";
@@ -24,9 +23,9 @@ export default class UserController {
     }
 
     async addUser(
-        req: CustomAPIRequest<EmptyObject, ApiResponse<IUserDocument | string>, IUser, EmptyObject>,
-        res: Response<ApiResponse<IUserDocument | string>>,
-        _next: NextFunction,
+        req: CustomAPIRequest<EmptyObject, ApiResponse<IUserDocument>, IUser, EmptyObject>,
+        res: Response<ApiResponse<IUserDocument>>,
+        next: NextFunction,
     ): Promise<Response<ApiResponse<IUserDocument>> | void> {
         try {
             const userData = new UserDTO(req.body);
@@ -38,21 +37,15 @@ export default class UserController {
             };
             return res.status(HttpStatus.CREATED).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async updateUserById(
-        req: CustomAPIRequest<IdParam, ApiResponse<IUserDocument | string>, IUser, EmptyObject>,
-        res: Response<ApiResponse<IUserDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IUserDocument | string>>> {
+        req: CustomAPIRequest<IdParam, ApiResponse<IUserDocument>, IUser, EmptyObject>,
+        res: Response<ApiResponse<IUserDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
@@ -65,21 +58,15 @@ export default class UserController {
             };
             return res.status(HttpStatus.ACCEPTED).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getUsers(
-        _req: CustomAPIRequest<EmptyObject, ApiResponse<Array<IUserDocument> | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<Array<IUserDocument> | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<Array<IUserDocument> | string>>> {
+        _req: CustomAPIRequest<EmptyObject, ApiResponse<Array<IUserDocument>>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<Array<IUserDocument>>>,
+        next: NextFunction,
+    ) {
         try {
             const dbUsers = await this._userService.getUsers();
             const response: ApiResponse<Array<IUserDocument>> = {
@@ -89,21 +76,15 @@ export default class UserController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getUserById(
-        req: CustomAPIRequest<IdParam, ApiResponse<IUserDocument | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<IUserDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IUserDocument | string>>> {
+        req: CustomAPIRequest<IdParam, ApiResponse<IUserDocument>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<IUserDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
@@ -116,21 +97,15 @@ export default class UserController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getUserByEmail(
-        req: CustomAPIRequest<EmailParam, ApiResponse<IUserDocument | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<IUserDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IUserDocument | string>>> {
+        req: CustomAPIRequest<EmailParam, ApiResponse<IUserDocument>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<IUserDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const email = req.params.email;
             const dbUser = await this._userService.getUserByEmail(email);
@@ -141,21 +116,15 @@ export default class UserController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getUserProfilePicById(
         req: CustomAPIRequest<IdParam, ApiResponse<string>, EmptyObject, EmptyObject>,
         res: Response<ApiResponse<string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<string>>> {
+        next: NextFunction,
+    ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
@@ -168,21 +137,11 @@ export default class UserController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
-    async uploadByUserImageId(
-        req: Request,
-        res: Response<ApiResponse<string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<string>>> {
+    async uploadByUserImageId(req: Request, res: Response<ApiResponse<string>>, next: NextFunction) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
 
@@ -199,13 +158,7 @@ export default class UserController {
             };
             return res.status(HttpStatus.ACCEPTED).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 }

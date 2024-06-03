@@ -1,8 +1,15 @@
 import { NextFunction, Response } from "express";
 
 import HttpStatus from "http-status-codes";
+import { Types } from "mongoose";
 
+import constants from "../constants";
+import errorConstants from "../constants/error";
+import { IRoom, IRoomDocument } from "../databases/models/room";
+import { RESPONSE_STATUS } from "../enums/responseStatus";
+import { ExpressError } from "../helpers/expressError";
 import RoomService from "../services/room";
+import { IdParam } from "../types/idParam";
 import {
     ApiResponse,
     CustomAPIRequest,
@@ -11,14 +18,6 @@ import {
     RequestBody,
 } from "../types/customRequest";
 import { EmptyObject } from "../types/emptyObect";
-import { IRoom, IRoomDocument } from "../databases/models/room";
-import { RESPONSE_STATUS } from "../enums/responseStatus";
-import constants from "../constants";
-import logger from "../helpers/logger";
-import { ExpressError } from "../helpers/expressError";
-import { IdParam } from "../types/idParam";
-import { Types } from "mongoose";
-import errorConstants from "../constants/error";
 
 export default class RoomController {
     private readonly _roomService: RoomService;
@@ -28,9 +27,9 @@ export default class RoomController {
     }
 
     async addRoom(
-        req: CustomAPIRequest<EmptyObject, ApiResponse<IRoomDocument | string>, RequestBody<IRoom>, EmptyObject>,
-        res: Response<ApiResponse<IRoomDocument | string>>,
-        _next: NextFunction,
+        req: CustomAPIRequest<EmptyObject, ApiResponse<IRoomDocument>, RequestBody<IRoom>, EmptyObject>,
+        res: Response<ApiResponse<IRoomDocument>>,
+        next: NextFunction,
     ) {
         try {
             const dbRoom = await this._roomService.addRoom(req.body);
@@ -41,20 +40,14 @@ export default class RoomController {
             };
             return res.status(HttpStatus.CREATED).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getRooms(
-        _req: CustomAPIRequest<EmptyObject, ApiResponse<Array<IRoomDocument> | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<Array<IRoomDocument> | string>>,
-        _next: NextFunction,
+        _req: CustomAPIRequest<EmptyObject, ApiResponse<Array<IRoomDocument>>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<Array<IRoomDocument>>>,
+        next: NextFunction,
     ) {
         try {
             const dbRooms = await this._roomService.getRooms();
@@ -65,21 +58,15 @@ export default class RoomController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getRoomById(
-        req: CustomAPIRequest<IdParam, ApiResponse<IRoomDocument | string>, RequestBody<EmptyObject>, EmptyObject>,
-        res: Response<ApiResponse<IRoomDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IRoomDocument | string>>> {
+        req: CustomAPIRequest<IdParam, ApiResponse<IRoomDocument>, RequestBody<EmptyObject>, EmptyObject>,
+        res: Response<ApiResponse<IRoomDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
@@ -92,20 +79,14 @@ export default class RoomController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async deleteRoomById(
-        req: CustomAPIRequest<IdParam, ApiResponse<IRoomDocument | string>, RequestBody<EmptyObject>, EmptyObject>,
-        res: Response<ApiResponse<IRoomDocument | string>>,
-        _next: NextFunction,
+        req: CustomAPIRequest<IdParam, ApiResponse<IRoomDocument>, RequestBody<EmptyObject>, EmptyObject>,
+        res: Response<ApiResponse<IRoomDocument>>,
+        next: NextFunction,
     ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
@@ -120,13 +101,7 @@ export default class RoomController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
@@ -158,10 +133,10 @@ export default class RoomController {
     }
 
     async addUserInRoom(
-        req: CustomAPIRequest<IdParam, ApiResponse<IRoomDocument | string>, RequestBody<EmptyObject>, EmptyObject>,
-        res: Response<ApiResponse<IRoomDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IRoomDocument | string>> | void> {
+        req: CustomAPIRequest<IdParam, ApiResponse<IRoomDocument>, RequestBody<EmptyObject>, EmptyObject>,
+        res: Response<ApiResponse<IRoomDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const { dbUser } = <CustomSessionWithSessionData>req.session;
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
@@ -170,13 +145,7 @@ export default class RoomController {
             await this._roomService.addUserInRoom(id, dbUser);
             return res.status(HttpStatus.ACCEPTED).send();
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 }

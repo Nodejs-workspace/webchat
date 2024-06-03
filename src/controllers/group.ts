@@ -3,7 +3,13 @@ import { NextFunction, Response } from "express";
 import HttpStatus from "http-status-codes";
 import { Types } from "mongoose";
 
+import errorConstants from "../constants/error";
+import constants from "../constants";
+import { IGroup, IGroupDocument } from "../databases/models/group";
+import { RESPONSE_STATUS } from "../enums/responseStatus";
+import { ExpressError } from "../helpers/expressError";
 import GroupService from "../services/group";
+import { IdParam } from "../types/idParam";
 import {
     ApiResponse,
     CustomAPIRequest,
@@ -12,13 +18,6 @@ import {
     RequestBody,
 } from "../types/customRequest";
 import { EmptyObject } from "../types/emptyObect";
-import { RESPONSE_STATUS } from "../enums/responseStatus";
-import constants from "../constants";
-import { IGroup, IGroupDocument } from "../databases/models/group";
-import logger from "../helpers/logger";
-import { ExpressError } from "../helpers/expressError";
-import { IdParam } from "../types/idParam";
-import errorConstants from "../constants/error";
 
 export default class GroupController {
     private _groupService: GroupService;
@@ -28,10 +27,10 @@ export default class GroupController {
     }
 
     async add(
-        req: CustomAPIRequest<EmptyObject, ApiResponse<IGroupDocument | string>, RequestBody<IGroup>, EmptyObject>,
-        res: Response<ApiResponse<IGroupDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IGroupDocument | string>>> {
+        req: CustomAPIRequest<EmptyObject, ApiResponse<IGroupDocument>, RequestBody<IGroup>, EmptyObject>,
+        res: Response<ApiResponse<IGroupDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const dbGroup = await this._groupService.add(req.body);
             const response: ApiResponse<IGroupDocument> = {
@@ -41,21 +40,15 @@ export default class GroupController {
             };
             return res.status(HttpStatus.CREATED).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getGroups(
-        _req: CustomAPIRequest<EmptyObject, ApiResponse<Array<IGroupDocument> | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<Array<IGroupDocument> | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<Array<IGroupDocument> | string>>> {
+        _req: CustomAPIRequest<EmptyObject, ApiResponse<Array<IGroupDocument>>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<Array<IGroupDocument>>>,
+        next: NextFunction,
+    ) {
         try {
             const dbGroups = await this._groupService.getGroups();
             const response: ApiResponse<Array<IGroupDocument>> = {
@@ -65,21 +58,15 @@ export default class GroupController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getGroupById(
-        req: CustomAPIRequest<IdParam, ApiResponse<IGroupDocument | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<IGroupDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IGroupDocument | string>>> {
+        req: CustomAPIRequest<IdParam, ApiResponse<IGroupDocument>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<IGroupDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
@@ -93,21 +80,15 @@ export default class GroupController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async deleteByGroupId(
-        req: CustomAPIRequest<IdParam, ApiResponse<IGroupDocument | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<IGroupDocument | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<IGroupDocument | string>>> {
+        req: CustomAPIRequest<IdParam, ApiResponse<IGroupDocument>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<IGroupDocument>>,
+        next: NextFunction,
+    ) {
         try {
             const id = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!id || !Types.ObjectId.isValid(id))
@@ -121,13 +102,7 @@ export default class GroupController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 

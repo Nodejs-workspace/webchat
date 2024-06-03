@@ -7,7 +7,6 @@ import constants from "../constants";
 import errorConstants from "../constants/error";
 import { IMessage, IMessageDocument } from "../databases/models/message";
 import { RESPONSE_STATUS } from "../enums/responseStatus";
-import logger from "../helpers/logger";
 import { ExpressError } from "../helpers/expressError";
 import MessageService from "../services/message";
 import { ApiResponse, CustomAPIRequest } from "../types/customRequest";
@@ -22,9 +21,9 @@ export default class MessageController {
     }
 
     async saveMessage(
-        req: CustomAPIRequest<EmptyObject, ApiResponse<IMessageDocument | string>, IMessage, EmptyObject>,
-        res: Response<ApiResponse<IMessageDocument | string>>,
-        _next: NextFunction,
+        req: CustomAPIRequest<EmptyObject, ApiResponse<IMessageDocument>, IMessage, EmptyObject>,
+        res: Response<ApiResponse<IMessageDocument>>,
+        next: NextFunction,
     ) {
         try {
             const dbMessage = await this._messageService.saveMessage(req.body);
@@ -35,21 +34,15 @@ export default class MessageController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getMessageByGroupId(
-        req: CustomAPIRequest<IdParam, ApiResponse<Array<IMessageDocument> | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<Array<IMessageDocument> | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<Array<IMessageDocument>>> | void> {
+        req: CustomAPIRequest<IdParam, ApiResponse<Array<IMessageDocument>>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<Array<IMessageDocument>>>,
+        next: NextFunction,
+    ) {
         try {
             const groupId = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!groupId || !Types.ObjectId.isValid(groupId))
@@ -62,21 +55,15 @@ export default class MessageController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 
     async getMessageByUserId(
-        req: CustomAPIRequest<IdParam, ApiResponse<Array<IMessageDocument> | string>, EmptyObject, EmptyObject>,
-        res: Response<ApiResponse<Array<IMessageDocument> | string>>,
-        _next: NextFunction,
-    ): Promise<Response<ApiResponse<Array<IMessageDocument>>> | void> {
+        req: CustomAPIRequest<IdParam, ApiResponse<Array<IMessageDocument>>, EmptyObject, EmptyObject>,
+        res: Response<ApiResponse<Array<IMessageDocument>>>,
+        next: NextFunction,
+    ) {
         try {
             const userId = req.params.id ?? constants.DEFAULTS.EMPTY.STRING();
             if (!userId || !Types.ObjectId.isValid(userId))
@@ -89,13 +76,7 @@ export default class MessageController {
             };
             return res.status(HttpStatus.OK).send(response);
         } catch (error) {
-            logger.error(error);
-            const response: ApiResponse<string> = {
-                status: RESPONSE_STATUS.FAILED,
-                message: constants.DEFAULTS.EMPTY.STRING(),
-                data: (<ExpressError>error).message,
-            };
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+            return next(error);
         }
     }
 }

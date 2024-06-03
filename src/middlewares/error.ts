@@ -5,6 +5,9 @@ import HttpStatus from "http-status-codes";
 
 import logger from "../helpers/logger";
 import { ExpressError } from "../helpers/expressError";
+import { ApiResponse } from "../types/customRequest";
+import { RESPONSE_STATUS } from "../enums/responseStatus";
+import constants from "../constants";
 
 export class ErrorMiddleware {
     static notFoundHandle(_req: Request, _res: Response, next: NextFunction): void {
@@ -31,9 +34,13 @@ export class ErrorMiddleware {
     }
 
     static apiErrorHandle(error: ExpressError, _req: Request, res: Response, _next: NextFunction): Response {
-        logger.error(error.stack);
-        const code = error.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
-        const message = error.message;
-        return res.status(code).send({ error: { message } });
+        logger.error(error);
+        const response: ApiResponse<string> = {
+            status: RESPONSE_STATUS.FAILED,
+            message: error.message,
+            data: error.message,
+        };
+        const status = error.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
+        return res.status(status).send(response);
     }
 }
