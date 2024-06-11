@@ -7,7 +7,7 @@ import { IUser, IUserDocument } from "../../../databases/models/user";
 const loginApiRoutesV1 = Router();
 
 loginApiRoutesV1.post<PathParams, ApiResponse<IUserDocument>, IUser, QueryParams>(
-    constants.ROUTER_PATH.APIS.BASE_PATH,
+    constants.ROUTER_PATH.APIS.INDEX,
     (...arg) => LoginContext.getControllerContext().loginUser(...arg),
 );
 

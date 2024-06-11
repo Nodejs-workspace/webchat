@@ -17,7 +17,7 @@ export default {
             UPLOAD_IMAGE_BY_ID: "/:id/upload",
             USERS: "/users",
             ROOMS: "/rooms",
-            MESSAGE: "/message",
+            MESSAGES: "/messages",
             GROUPS: "/groups",
             PROFILE: "/profile",
             USER: "/user",
@@ -29,7 +29,7 @@ export default {
             INDEX: "/",
             USERS: "/users",
             ROOMS: "/rooms",
-            MESSAGE: "/message",
+            MESSAGES: "/messages",
             GROUPS: "/groups",
             PROFILE: "/profile",
             ID_PARAM: "/:id",
@@ -64,7 +64,7 @@ export default {
     MONGOOSE: {
         LIMIT: 30,
         TOKEN_EXPIRES_TIME: "5 minutes",
-        COLLLECTION: {
+        COLLECTION: {
             USERS: {
                 NAME: "users",
             },

@@ -1,6 +1,7 @@
 "use strict";
 
-const URI = `${window.location.origin}/api`;
+const URI = `${window.location.origin}/api/v1`;
+// const baseURI = `${document.location.origin}/api/v1`;
 
 const getValueById = (id) => document.getElementById(id).value;
 const getElementById = (id) => document.getElementById(id);
@@ -17,16 +18,17 @@ async function login() {
 
         if (!email && !name && !password) throw Error("Credential Required.");
 
-        const response = await fetch(`${URI}/v1/users/email/${email}`, {
-            method: "GET",
+        const response = await fetch(`${URI}/login/`, {
+            method: "POST",
             headers: {
                 "Content-type": "application/json",
             },
+            body: JSON.stringify({ email, password }),
         });
         const { data: user } = await response.json();
         delete user.profilePicture;
         sessionStorage.setItem("user", JSON.stringify(user));
-        if (response.status === 200) window.location.href = `${window.location.origin}/rooms`;
+        if (response.status === 202) window.location.href = `${window.location.origin}/rooms`;
     } catch (error) {
         console.log(error);
         loginButton.disabled = false;

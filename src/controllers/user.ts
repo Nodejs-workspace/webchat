@@ -11,7 +11,7 @@ import { RESPONSE_STATUS } from "../enums/responseStatus";
 import { ExpressError } from "../helpers/expressError";
 import UserService from "../services/user";
 import { ApiResponse, CustomAPIRequest } from "../types/customRequest";
-import { EmptyObject } from "../types/emptyObect";
+import { EmptyObject } from "../types/emptyObject";
 import { IdParam } from "../types/idParam";
 import { EmailParam } from "../types/emailParam";
 

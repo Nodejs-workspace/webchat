@@ -2,7 +2,7 @@ import { Request } from "express";
 import { Session } from "express-session";
 
 import { IUserDocument } from "../databases/models/user";
-import { EmptyObject } from "./emptyObect";
+import { EmptyObject } from "./emptyObject";
 
 export type PathParams<T = EmptyObject> = T;
 export type ApiResponse<T = EmptyObject> = { status: string; message: string; data: T | string | null };

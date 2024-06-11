@@ -1,15 +1,16 @@
 import HttpStatus from "http-status-codes";
+
+import errorConstants from "../constants/error";
+import { IMessage, IMessageDocument } from "../databases/models/message";
+import GroupService from "./group";
+import { ExpressError } from "../helpers/expressError";
 import MessageRepository from "../repositories/message";
 import UserService from "./user";
-import GroupService from "./group";
-import { IMessage, IMessageDocument } from "../databases/models/message";
-import { ExpressError } from "../helpers/expressError";
-import errorConstants from "../constants/error";
 
 export default class MessageService {
-    private _messageRepository: MessageRepository;
-    private _userService: UserService;
-    private _groupService: GroupService;
+    private readonly _messageRepository: MessageRepository;
+    private readonly _userService: UserService;
+    private readonly _groupService: GroupService;
 
     constructor(messageRepository: MessageRepository, userService: UserService, groupService: GroupService) {
         this._messageRepository = messageRepository;
@@ -17,7 +18,7 @@ export default class MessageService {
         this._groupService = groupService;
     }
 
-    async saveMessage(message: IMessage): Promise<IMessageDocument> {
+    public async saveMessage(message: IMessage): Promise<IMessageDocument> {
         if (!(message.userId && message.groupId))
             throw new ExpressError(errorConstants.CLIENT_ERROR.VALID_ID_REQUIRED, HttpStatus.NOT_FOUND);
 
@@ -28,11 +29,11 @@ export default class MessageService {
         return this._messageRepository.saveMessage(message);
     }
 
-    async getMessageByGroupId(groupId: string): Promise<Array<IMessageDocument>> {
+    public async getMessageByGroupId(groupId: string): Promise<Array<IMessageDocument>> {
         return await this._messageRepository.getMessageByGroupId(groupId);
     }
 
-    async getMessageByUserId(userId: string) {
+    public async getMessageByUserId(userId: string): Promise<Array<IMessageDocument>> {
         return await this._messageRepository.getMessageByUserId(userId);
     }
 }

@@ -47,6 +47,9 @@ export class ErrorMiddleware {
         const options = { layout, siteUrl, dbUser: undefined, error, title: "Web Chat 2" };
         // render the error page
         const status = error.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
+
+        if (status === HttpStatus.UNAUTHORIZED) return res.redirect(siteUrl);
+
         const view = ErrorMiddleware._getErrorViewByHttpStatus(status);
         return res.status(status).render(view, options);
     }

@@ -6,9 +6,9 @@ import errorConstants from "../constants/error";
 import { RESPONSE_STATUS } from "../enums/responseStatus";
 import logger from "../helpers/logger";
 import { ExpressError } from "../helpers/expressError";
-import { ApiResponse, CustomAPIRequest, CustomRequest, CustomSessionWithSessionData } from "../types/customRequest";
-import { EmptyObject } from "../types/emptyObect";
 import UserService from "../services/user";
+import { ApiResponse, CustomAPIRequest, CustomRequest, CustomSessionWithSessionData } from "../types/customRequest";
+import { EmptyObject } from "../types/emptyObject";
 
 export default class AuthMiddleware {
     private readonly _userService: UserService;

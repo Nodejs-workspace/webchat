@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 import constants from "../../constants";
 import serverConfig from "../../constants/serverConfig";
+import { USER_ROLE_ENM } from "../../enums/users/role";
 import { ITimestamp } from "../../interfaces/timestamp";
 
 export interface IUserToken extends ITimestamp {
@@ -24,6 +25,7 @@ export interface IUser {
     password: string;
     rooms: Array<string>;
     groups: Array<string>;
+    role: USER_ROLE_ENM;
 }
 
 export interface IUserDocument extends IUser, Document, IGenerateMethod, ITimestamp {}
@@ -43,6 +45,7 @@ const userSchema: Schema<IUserDocument> = new Schema<IUserDocument>(
         password: { type: String, required: constants.DEFAULTS.BOOLEAN.TRUE() },
         rooms: { type: [String], default: constants.DEFAULTS.EMPTY.ARRAY<string>() },
         groups: { tpe: [String], default: constants.DEFAULTS.EMPTY.ARRAY<string>() },
+        role: { type: String, enum: USER_ROLE_ENM, default: USER_ROLE_ENM.GUEST },
     },
     {
         timestamps: constants.DEFAULTS.BOOLEAN.TRUE(),
@@ -58,5 +61,5 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 };
 
-const UserModel: Model<IUserDocument> = model<IUserDocument>(constants.MONGOOSE.COLLLECTION.USERS.NAME, userSchema);
+const UserModel: Model<IUserDocument> = model<IUserDocument>(constants.MONGOOSE.COLLECTION.USERS.NAME, userSchema);
 export default UserModel;

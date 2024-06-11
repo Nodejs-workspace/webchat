@@ -10,7 +10,7 @@ import { RESPONSE_STATUS } from "../enums/responseStatus";
 import { ExpressError } from "../helpers/expressError";
 import MessageService from "../services/message";
 import { ApiResponse, CustomAPIRequest } from "../types/customRequest";
-import { EmptyObject } from "../types/emptyObect";
+import { EmptyObject } from "../types/emptyObject";
 import { IdParam } from "../types/idParam";
 
 export default class MessageController {

@@ -6,7 +6,7 @@ import errorConstants from "../constants/error";
 import { RESPONSE_STATUS } from "../enums/responseStatus";
 import logger from "../helpers/logger";
 import UserService from "../services/user";
-import { EmptyObject } from "../types/emptyObect";
+import { EmptyObject } from "../types/emptyObject";
 import { ApiResponse, CustomAPIRequest, CustomSessionWithSessionData } from "../types/customRequest";
 
 export default class UserMiddleware {

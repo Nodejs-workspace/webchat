@@ -1,6 +1,6 @@
 "use strict";
 
-const baseURI = `${document.location.origin}/api/v1`;
+const baseURI = `${window.location.origin}/api/v1`;
 // const URI = "http://localhost:3000/api/v1/users";
 let sessionUser = JSON.parse(sessionStorage.getItem("user"));
 let token = sessionUser.tokens[0].token;
@@ -137,7 +137,7 @@ function showImage(data) {
         const userId = getValueById("_id");
         const response = await fetch(`${baseURI}/users/${userId}/image`);
         const { data } = await response.json();
-        showImage(data);
+        if (data) showImage(data);
     } catch (error) {
         console.log(error);
     }

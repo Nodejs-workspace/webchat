@@ -11,6 +11,7 @@ import morgan from "morgan";
 
 import constants from "./constants";
 import serverConfig from "./constants/serverConfig";
+import SocketContext from "./contexts/socket";
 import MongoDB from "./databases";
 import logger from "./helpers/logger";
 import { ErrorMiddleware } from "./middlewares/error";
@@ -51,10 +52,18 @@ app.use(constants.ROUTER_PATH.VIEWS.INDEX, viewRoute);
 app.use(constants.ROUTER_PATH.VIEWS.INDEX, ErrorMiddleware.notFoundHandle);
 app.use(constants.ROUTER_PATH.VIEWS.INDEX, ErrorMiddleware.errorHandle);
 
-app.listen(port, () => {
+const httpServer = app.listen(port, () => {
     try {
         logger.info(`Server is listening, http://localhost:${port}`);
     } catch (error) {
         console.log(error);
     }
 });
+
+(async () => {
+    try {
+        SocketContext.getServiceContext().initialize(httpServer);
+    } catch (error) {
+        logger.error(error);
+    }
+})();

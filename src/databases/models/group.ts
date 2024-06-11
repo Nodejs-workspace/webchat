@@ -26,7 +26,7 @@ const groupSchema: Schema = new Schema<IGroup>(
         },
         room: {
             type: Schema.Types.ObjectId,
-            ref: constants.MONGOOSE.COLLLECTION.ROOMS.NAME,
+            ref: constants.MONGOOSE.COLLECTION.ROOMS.NAME,
             required: constants.DEFAULTS.BOOLEAN.TRUE(),
         },
     },
@@ -35,8 +35,5 @@ const groupSchema: Schema = new Schema<IGroup>(
     },
 );
 
-const GroupModel: Model<IGroupDocument> = model<IGroupDocument>(
-    constants.MONGOOSE.COLLLECTION.GROUPS.NAME,
-    groupSchema,
-);
+const GroupModel: Model<IGroupDocument> = model<IGroupDocument>(constants.MONGOOSE.COLLECTION.GROUPS.NAME, groupSchema);
 export default GroupModel;

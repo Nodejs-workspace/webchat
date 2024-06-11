@@ -6,7 +6,7 @@ import constants from "../constants";
 import { IUser, IUserDocument } from "../databases/models/user";
 import LoginDTO from "../dtos/login";
 import { RESPONSE_STATUS } from "../enums/responseStatus";
-import { EmptyObject } from "../types/emptyObect";
+import { EmptyObject } from "../types/emptyObject";
 import LoginService from "../services/login";
 import { ApiResponse, CustomAPIRequest, ISessionUser } from "../types/customRequest";
 

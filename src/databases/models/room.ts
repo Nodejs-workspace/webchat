@@ -25,5 +25,5 @@ const roomSchema: Schema = new Schema<IRoomDocument>(
     },
 );
 
-const RoomModel: Model<IRoomDocument> = model<IRoomDocument>(constants.MONGOOSE.COLLLECTION.ROOMS.NAME, roomSchema);
+const RoomModel: Model<IRoomDocument> = model<IRoomDocument>(constants.MONGOOSE.COLLECTION.ROOMS.NAME, roomSchema);
 export default RoomModel;

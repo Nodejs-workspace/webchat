@@ -17,7 +17,7 @@ import {
     CustomSessionWithSessionData,
     RequestBody,
 } from "../types/customRequest";
-import { EmptyObject } from "../types/emptyObect";
+import { EmptyObject } from "../types/emptyObject";
 
 export default class GroupController {
     private _groupService: GroupService;

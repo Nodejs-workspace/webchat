@@ -1,7 +1,7 @@
 "use strict";
 
 const socket = io();
-const URI = "http://localhost:3000/api/v1";
+const URI = `${window.location.origin}/api/v1`;
 let scroll = 0;
 const getGroupIdFromSession = sessionStorage.getItem("groupId");
 let imageIdCount = 1;
@@ -166,7 +166,7 @@ async function messageSend() {
         const dataToSend = { message, userId, groupId };
 
         // store value of image upload by input file tag in variable
-        const response = await fetch(`${URI}/message`, {
+        const response = await fetch(`${URI}/messages`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json",
@@ -202,7 +202,7 @@ async function sendLocation() {
             const groupId = getValueById("groupId");
             const dataToSend = { message: location, userId, groupId };
 
-            const response = await fetch(`${URI}/message`, {
+            const response = await fetch(`${URI}/messages`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -428,7 +428,7 @@ async function getMessages(id, groupName) {
         getElementById("chat-action").innerHTML = "";
 
         const user = JSON.parse(sessionStorage.getItem("user"));
-        const response = await fetch(`${URI}/message/group/${id}`, {
+        const response = await fetch(`${URI}/messages/groups/${id}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -436,7 +436,7 @@ async function getMessages(id, groupName) {
         });
 
         const status = response.status;
-        if (status === 200) var { savedMessage } = await response.json();
+        if (status === 200) var { data: savedMessage } = await response.json();
         if (status === 401) {
             await getToken();
             return getMessages(id, groupName);
