@@ -29,11 +29,13 @@ const messageSchema: Schema = new Schema<IMessageDocument>(
             ref: constants.MONGOOSE.COLLECTION.USERS.NAME,
             required: constants.DEFAULTS.BOOLEAN.TRUE(),
         },
-        groupId: {
+        group: {
             type: mongoose.Schema.Types.ObjectId,
             ref: constants.MONGOOSE.COLLECTION.GROUPS.NAME,
             required: constants.DEFAULTS.BOOLEAN.TRUE(),
         },
+        userId: { type: mongoose.Schema.Types.ObjectId, required: constants.DEFAULTS.BOOLEAN.TRUE() },
+        groupId: { type: mongoose.Schema.Types.ObjectId, required: constants.DEFAULTS.BOOLEAN.TRUE() },
         messageType: { type: String, enum: USER_ROLE_ENM },
         status: { type: String, enum: MESSAGE_STATUS_ENUM, default: MESSAGE_STATUS_ENUM.SENT },
     },

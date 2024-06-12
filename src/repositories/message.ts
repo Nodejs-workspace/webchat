@@ -8,11 +8,10 @@ export default class MessageRepository {
     private readonly _messageModel: Model<IMessageDocument> = MessageModel;
 
     public async saveMessage(message: IMessage): Promise<IMessageDocument> {
-        const storedMessage = await this._messageModel.create(message);
-        await storedMessage.populate("messagedBy");
-        await storedMessage.populate("group");
-
-        return storedMessage;
+        const dbMessage = new this._messageModel(message);
+        await dbMessage.save();
+        await Promise.all([dbMessage.populate("messagedBy"), dbMessage.populate("group")]);
+        return dbMessage;
     }
 
     public async getMessageByGroupId(groupId: string): Promise<Array<IMessageDocument>> {
