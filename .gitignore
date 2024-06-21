@@ -131,3 +131,6 @@ dist
 
 # task list txt
 task.txt
+
+# vscode settings
+.vscode
