@@ -23,5 +23,6 @@ export default class MemberService {
         ]);
         const message: IMessage = MessageMapper.toMessageModel(body, dbUser, dbGroup);
         await this._messageService.saveMessage(message);
+        await this._groupService.sendMessageToGroup(message);
     }
 }

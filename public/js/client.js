@@ -163,25 +163,17 @@ async function messageSend() {
         const userId = getValueById("_id");
         const groupId = getValueById("groupId");
         console.log(message);
-        const dataToSend = { message, userId, groupId };
+        let dataToSend = {
+            role: "member",
+            eventType: "send",
+            data: { message },
+            userId,
+            email: sessionUser.email,
+            groupId,
+            socketId: socket.id,
+        };
 
-        // store value of image upload by input file tag in variable
-        const response = await fetch(`${URI}/messages`, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(dataToSend),
-        });
-
-        if (response.status === 401) {
-            getToken();
-            return messageSend();
-        }
-
-        const { savedMessage } = await response.json();
-        socket.emit("message", savedMessage);
+        socket.emit("message", dataToSend);
         setValueById("message");
         getElementById("message").focus();
     } catch (error) {

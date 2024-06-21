@@ -1,4 +1,4 @@
-import { REQUEST_TYPE_ENUM } from "../../enums/chats/requestType";
+import { EVENT_TYPE_ENUM } from "../../enums/sockets/eventType";
 import { USER_ROLE_ENM } from "../../enums/users/role";
 
 export type MessageData = {
@@ -8,9 +8,10 @@ export type MessageData = {
 
 export type ChatMessage = {
     role: USER_ROLE_ENM;
-    requestType: REQUEST_TYPE_ENUM;
+    eventType: EVENT_TYPE_ENUM;
     data: MessageData;
     userId: string;
     email: string;
     groupId: string;
+    socketId: string;
 };
